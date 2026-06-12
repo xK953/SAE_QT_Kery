@@ -1,33 +1,27 @@
 <?php
-// 1. On inclut le pont vers la base de données
 require 'db.php';
 
-// 2. On vérifie si le formulaire a été soumis
 if (isset($_POST['inscription'])) {
-    
-    // 3. On récupère les données tapées par l'utilisateur
     $pseudo = $_POST['pseudo'];
     $email = $_POST['email'];
     $mdp_en_clair = $_POST['mdp'];
-
-    // 4. SÉCURITÉ : On hache le mot de passe (ne jamais stocker en clair !)
     $hash_mdp = password_hash($mdp_en_clair, PASSWORD_DEFAULT);
 
     try {
-        // 5. On prépare la requête SQL d'insertion
         $requete = $pdo->prepare("INSERT INTO Utilisateurs (pseudo, email, hash_mdp) VALUES (:pseudo, :email, :hash)");
-        
-        // 6. On exécute la requête en injectant les vraies valeurs
         $requete->execute([
             ':pseudo' => $pseudo,
             ':email' => $email,
             ':hash' => $hash_mdp
         ]);
 
-        echo "<p style='color: green;'>Inscription réussie ! Vous pouvez maintenant vous connecter.</p>";
+        // --- LA SOLUTION EST ICI ---
+        // Au lieu de faire un simple 'echo', on redirige l'utilisateur vers la page de connexion
+        // Le 'exit;' est obligatoire juste après un 'header()' pour stopper le script.
+        header("Location: login.php?succes=1");
+        exit;
         
     } catch(PDOException $e) {
-        // Si l'email existe déjà (grâce à la contrainte UNIQUE mise dans la BDD)
         if ($e->getCode() == 23000) {
             echo "<p style='color: red;'>Erreur : Cet email est déjà utilisé.</p>";
         } else {
