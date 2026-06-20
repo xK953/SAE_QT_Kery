@@ -68,7 +68,7 @@ if (isset($_POST['connexion'])) {
         <button type="submit" name="connexion">Se connecter</button>
     </form>
 
-    <p style="text-align: center; margin-top: 15px;">
+    <p class="connexion">
         Pas encore de compte ? <a href="inscription.php">S'inscrire</a>
     </p>
 </body>

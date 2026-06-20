@@ -56,5 +56,8 @@ if (isset($_POST['inscription'])) {
 
         <button type="submit" name="inscription">S'inscrire</button>
     </form>
+    <p class="connexion">
+        Vous avez déjà un compte ? <a href="login.php">Se connecter </a>
+    </p>
 </body>
 </html>
