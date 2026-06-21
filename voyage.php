@@ -66,8 +66,9 @@ foreach ($etapes as $etape) {
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Details du voyage - Planificateur de vacances</title>
+    <title>Details du voyage - On Va Où ?</title>
     <link rel="stylesheet" href="sae.css">
+    <link rel="icon" type="image/png" href="logo_ovo.png">
 </head>
 <body>
     <header class="dashboard-header">

@@ -62,8 +62,9 @@ if (isset($_POST['creer_voyage'])) {
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Nouveau voyage - Planificateur de vacances</title>
+    <title>Nouveau voyage - On Va Où ?</title>
     <link rel="stylesheet" href="sae.css">
+    <link rel="icon" type="image/png" href="logo_ovo.png">
 </head>
 <body>
     <header class="dashboard-header">

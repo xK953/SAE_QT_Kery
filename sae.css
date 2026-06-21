@@ -174,16 +174,13 @@ p.connexion a:hover {
 }
 
 .app-logo {
-    width: 42px;
-    height: 42px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 10px;
-    background: linear-gradient(135deg, var(--couleur-info), var(--couleur-succes));
-    color: #ffffff;
-    font-weight: 800;
-    letter-spacing: 0.02em;
+    width: 58px;
+    height: 58px;
+    display: block;
+    object-fit: cover;
+    padding: 2px;
+    border-radius: 14px;
+    background: #ffffff;
 }
 
 .app-brand strong {

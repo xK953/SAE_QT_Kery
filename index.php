@@ -72,15 +72,16 @@ try {
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Tableau de bord - Planificateur de vacances</title>
+    <title>Tableau de bord - On Va Où ?</title>
     <link rel="stylesheet" href="sae.css">
+    <link rel="icon" type="image/png" href="logo_ovo.png">
 </head>
 <body>
     <header class="dashboard-header">
         <div class="app-brand">
-            <span class="app-logo">VT</span>
+            <img src="logo_ovo.png" alt="Logo On Va Où ?" class="app-logo">
             <div>
-                <strong>VoyageTrack</strong>
+                <strong>On Va Où ?</strong>
                 <span>Gestion de voyages et depenses</span>
             </div>
         </div>

@@ -36,8 +36,9 @@ if (isset($_POST['inscription'])) {
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Inscription - Gestionnaire de Voyage</title>
+    <title>Inscription - On Va Où ?</title>
     <link rel="stylesheet" href="sae.css">
+    <link rel="icon" type="image/png" href="logo_ovo.png">
 </head>
 <body>
     <h2>Créer un compte</h2>
