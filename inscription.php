@@ -1,5 +1,6 @@
 <?php
 require 'db.php';
+// *
 
 if (isset($_POST['inscription'])) {
     $pseudo = $_POST['pseudo'];
