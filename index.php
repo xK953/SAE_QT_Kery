@@ -70,6 +70,10 @@ try {
                         <h4>🌍 <?= htmlspecialchars($voyage['titre_destination']) ?></h4>
                         <p><strong>Départ le :</strong> <?= date('d/m/Y', strtotime($voyage['date_debut'])) ?></p>
                         <p><strong>Durée :</strong> <?= htmlspecialchars($voyage['duree_jours']) ?> jours</p>
+                        <div class="voyage-actions">
+                            <a href="voyage.php?id=<?= htmlspecialchars($voyage['id_voyage']) ?>" class="btn-voir">Voir</a>
+                            <a href="modifier_voyage.php?id=<?= htmlspecialchars($voyage['id_voyage']) ?>" class="btn-modifier">Modifier</a>
+                        </div>
                     </article>
                 <?php endforeach; ?>
             <?php endif; ?>
