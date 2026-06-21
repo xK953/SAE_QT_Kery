@@ -8,9 +8,11 @@ CREATE TABLE IF NOT EXISTS Utilisateurs (
 
 CREATE TABLE IF NOT EXISTS Voyages (
     id_voyage INT AUTO_INCREMENT PRIMARY KEY,
+    id_createur INT NOT NULL,
     titre_destination VARCHAR(100) NOT NULL,
     date_debut DATE NOT NULL,
-    duree_jours INT NOT NULL
+    duree_jours INT NOT NULL,
+    FOREIGN KEY (id_createur) REFERENCES Utilisateurs(id_utilisateur) ON DELETE CASCADE
 );
 
 
