@@ -1,24 +1,5 @@
 // On s'assure que tout le HTML est chargé avant d'agir sur la page
 document.addEventListener("DOMContentLoaded", () => {
-    // ==========================================
-    // 0. MODE NUIT GLOBAL
-    // ==========================================
-    const boutonModeNuit = document.getElementById('mode-nuit-toggle');
-    const modeNuitActif = localStorage.getItem('modeNuit') === 'actif';
-
-    document.body.classList.toggle('mode-nuit', modeNuitActif);
-
-    if (boutonModeNuit) {
-        boutonModeNuit.textContent = modeNuitActif ? 'Mode clair ☀️' : 'Mode nuit 🌙';
-
-        boutonModeNuit.addEventListener('click', () => {
-            const nouveauModeNuit = !document.body.classList.contains('mode-nuit');
-
-            document.body.classList.toggle('mode-nuit', nouveauModeNuit);
-            localStorage.setItem('modeNuit', nouveauModeNuit ? 'actif' : 'inactif');
-            boutonModeNuit.textContent = nouveauModeNuit ? 'Mode clair ☀️' : 'Mode nuit 🌙';
-        });
-    }
 
     // ==========================================
     // 1. AUTO-DISPARITION DES MESSAGES D'ALERTE
@@ -103,21 +84,4 @@ document.addEventListener("DOMContentLoaded", () => {
         // On lance le calcul une première fois au chargement (très utile sur modifier_voyage.php !)
         calculerRetour();
     }
-
-    // ==========================================
-    // 4. DATE DE RETOUR DANS LA LISTE DES VOYAGES
-    // ==========================================
-    const datesRetourListe = document.querySelectorAll('.date-retour-liste');
-
-    datesRetourListe.forEach(element => {
-        const dateDebutVoyage = element.dataset.dateDebut;
-        const dureeVoyage = parseInt(element.dataset.dureeJours);
-
-        if (dateDebutVoyage && dureeVoyage > 0) {
-            const dateRetour = new Date(dateDebutVoyage);
-            dateRetour.setDate(dateRetour.getDate() + dureeVoyage);
-
-            element.innerHTML = `<strong>Retour le :</strong> ${dateRetour.toLocaleDateString('fr-FR')}`;
-        }
-    });
 });

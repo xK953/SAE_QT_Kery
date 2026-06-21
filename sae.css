@@ -692,6 +692,62 @@ p.connexion a:hover {
     font-weight: normal;
 }
 
+
+
+/* =========================================
+   STYLES INJECTÉS PAR LE JAVASCRIPT
+   ========================================= */
+
+/* Conteneur pour le champ mot de passe et son bouton */
+.password-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+/* On retire la marge du bas sur l'input car le wrapper gère l'espacement */
+.password-wrapper input[type="password"],
+.password-wrapper input[type="text"] {
+    margin-bottom: 0;
+    padding-right: 40px; /* On laisse de la place pour l'icône à droite */
+}
+
+/* Le petit bouton en forme d'œil */
+.btn-toggle-password {
+    position: absolute;
+    right: 5px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    width: auto;
+    padding: 5px;
+    color: #666;
+    font-size: 1.2rem;
+    cursor: pointer;
+}
+
+.btn-toggle-password:hover {
+    background: none;
+    transform: translateY(-50%) scale(1.1); /* Petit effet de grossissement */
+}
+
+/* Espacement manuel après le wrapper pour remplacer la marge de l'input */
+.password-wrapper + br + br,
+.password-wrapper + button {
+    margin-top: 15px;
+}
+
+/* Le texte dynamique de calcul de la date */
+.date-retour-dynamique {
+    color: #007bff;
+    font-weight: bold;
+    font-size: 0.9rem;
+    margin-top: -10px;
+    margin-bottom: 15px;
+    padding-left: 5px;
+    animation: fadeIn 0.3s ease-in-out;
+}
+
 /* Petite animation d'apparition douce */
 @keyframes fadeIn {
     from { opacity: 0; transform: translateY(-5px); }
