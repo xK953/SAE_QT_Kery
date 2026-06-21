@@ -21,7 +21,9 @@ form {
 /* Style des champs de saisie */
 input[type="text"],
 input[type="email"],
-input[type="password"] {
+input[type="password"],
+input[type="date"],
+input[type="number"] {
     width: 100%;
     padding: 10px;
     margin-top: 5px;
