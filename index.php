@@ -17,7 +17,7 @@ if (isset($_GET['action']) && $_GET['action'] === 'deconnexion') {
 }
 
 // 4. Initialisation des variables
-$id_utilisateur = $_SESSION['id_utilisateur'];
+$id_utilisateur = (int) $_SESSION['id_utilisateur'];
 $voyages = [];
 $erreur = "";
 $succes = isset($_GET['supprime']) ? "Le voyage a bien ete supprime." : "";
@@ -28,18 +28,15 @@ if (isset($_POST['suppression_confirmee'])) {
 
     try {
         $requete = $pdo->prepare("
-            SELECT COUNT(*)
-            FROM Participants
+            SELECT id_createur
+            FROM Voyages
             WHERE id_voyage = :id_voyage
-            AND id_utilisateur = :id_utilisateur
         ");
-        $requete->execute([
-            ':id_voyage' => $id_voyage_a_supprimer,
-            ':id_utilisateur' => $id_utilisateur
-        ]);
+        $requete->execute([':id_voyage' => $id_voyage_a_supprimer]);
+        $voyage_a_supprimer = $requete->fetch(PDO::FETCH_ASSOC);
 
-        if ((int) $requete->fetchColumn() === 0) {
-            $erreur = "Vous ne pouvez pas supprimer ce voyage.";
+        if (!$voyage_a_supprimer || (int) $voyage_a_supprimer['id_createur'] !== $id_utilisateur) {
+            $erreur = "Vous n'etes pas le createur de ce voyage.";
         } else {
             $requete = $pdo->prepare("
                 DELETE FROM Voyages
@@ -58,7 +55,7 @@ if (isset($_POST['suppression_confirmee'])) {
 // 5. Récupération des données (Logique métier)
 try {
     $requete = $pdo->prepare("
-        SELECT v.id_voyage, v.titre_destination, v.date_debut, v.duree_jours 
+        SELECT v.id_voyage, v.id_createur, v.titre_destination, v.date_debut, v.duree_jours 
         FROM Voyages v
         JOIN Participants p ON v.id_voyage = p.id_voyage
         WHERE p.id_utilisateur = :id_user
@@ -116,11 +113,15 @@ try {
 
                         <?php if ($id_confirmation_suppression === (int) $voyage['id_voyage']): ?>
                             <div class="confirmation-suppression">
-                                <p>Voulez-vous vraiment supprimer ce voyage et toutes ses informations ?</p>
-                                <form action="index.php" method="POST" class="form-confirmation">
-                                    <input type="hidden" name="id_voyage" value="<?= htmlspecialchars($voyage['id_voyage']) ?>">
-                                    <button type="submit" name="suppression_confirmee" class="btn-danger">Confirmer la suppression</button>
-                                </form>
+                                <?php if ((int) $voyage['id_createur'] === $id_utilisateur): ?>
+                                    <p>Voulez-vous vraiment supprimer ce voyage et toutes ses informations ?</p>
+                                    <form action="index.php" method="POST" class="form-confirmation">
+                                        <input type="hidden" name="id_voyage" value="<?= htmlspecialchars($voyage['id_voyage']) ?>">
+                                        <button type="submit" name="suppression_confirmee" class="btn-danger">Confirmer la suppression</button>
+                                    </form>
+                                <?php else: ?>
+                                    <p>Vous n'etes pas le createur de ce voyage.</p>
+                                <?php endif; ?>
                                 <a href="index.php" class="btn-annuler">Annuler</a>
                             </div>
                         <?php endif; ?>

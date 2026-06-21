@@ -7,10 +7,11 @@ if (!isset($_SESSION['id_utilisateur'])) {
     exit;
 }
 
-$id_utilisateur = $_SESSION['id_utilisateur'];
+$id_utilisateur = (int) $_SESSION['id_utilisateur'];
 $id_voyage = isset($_GET['id']) ? (int) $_GET['id'] : 0;
 $erreur = "";
 $succes = "";
+$est_createur = false;
 
 if ($id_voyage <= 0) {
     header("Location: index.php");
@@ -18,6 +19,21 @@ if ($id_voyage <= 0) {
 }
 
 try {
+    $requete = $pdo->prepare("
+        SELECT id_voyage, id_createur, titre_destination, date_debut, duree_jours
+        FROM Voyages
+        WHERE id_voyage = :id_voyage
+    ");
+    $requete->execute([':id_voyage' => $id_voyage]);
+    $voyage = $requete->fetch(PDO::FETCH_ASSOC);
+
+    if (!$voyage) {
+        header("Location: index.php");
+        exit;
+    }
+
+    $est_createur = ((int) $voyage['id_createur'] === $id_utilisateur);
+
     $requete = $pdo->prepare("
         SELECT COUNT(*)
         FROM Participants
@@ -41,7 +57,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $action = $_POST['action'] ?? '';
 
     try {
-        if ($action === 'modifier_voyage') {
+        if (($action === 'ajouter_participant' || $action === 'supprimer_participant') && !$est_createur) {
+            $erreur = "Vous n'etes pas le createur de ce voyage.";
+        } elseif ($action === 'modifier_voyage') {
             $titre_destination = trim($_POST['titre_destination']);
             $date_debut = $_POST['date_debut'];
             $duree_jours = (int) $_POST['duree_jours'];
@@ -79,7 +97,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
         }
 
-        if ($action === 'ajouter_participant') {
+        if ($action === 'ajouter_participant' && $est_createur) {
             $email = trim($_POST['email']);
 
             if ($email === "") {
@@ -110,7 +128,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
         }
 
-        if ($action === 'supprimer_participant') {
+        if ($action === 'supprimer_participant' && $est_createur) {
             $id_participant = (int) $_POST['id_participant'];
 
             $requete = $pdo->prepare("
@@ -196,7 +214,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 try {
     $requete = $pdo->prepare("
-        SELECT id_voyage, titre_destination, date_debut, duree_jours
+        SELECT id_voyage, id_createur, titre_destination, date_debut, duree_jours
         FROM Voyages
         WHERE id_voyage = :id_voyage
     ");
@@ -300,22 +318,28 @@ try {
                         <span><?= htmlspecialchars($participant['email']) ?></span>
                     </div>
 
-                    <form action="modifier_voyage.php?id=<?= htmlspecialchars($id_voyage) ?>" method="POST" class="form-inline">
-                        <input type="hidden" name="action" value="supprimer_participant">
-                        <input type="hidden" name="id_participant" value="<?= htmlspecialchars($participant['id_utilisateur']) ?>">
-                        <button type="submit" class="btn-danger">Retirer</button>
-                    </form>
+                    <?php if ($est_createur): ?>
+                        <form action="modifier_voyage.php?id=<?= htmlspecialchars($id_voyage) ?>" method="POST" class="form-inline">
+                            <input type="hidden" name="action" value="supprimer_participant">
+                            <input type="hidden" name="id_participant" value="<?= htmlspecialchars($participant['id_utilisateur']) ?>">
+                            <button type="submit" class="btn-danger">Retirer</button>
+                        </form>
+                    <?php endif; ?>
                 </div>
             <?php endforeach; ?>
 
-            <form action="modifier_voyage.php?id=<?= htmlspecialchars($id_voyage) ?>" method="POST" class="form-secondaire">
-                <input type="hidden" name="action" value="ajouter_participant">
+            <?php if ($est_createur): ?>
+                <form action="modifier_voyage.php?id=<?= htmlspecialchars($id_voyage) ?>" method="POST" class="form-secondaire">
+                    <input type="hidden" name="action" value="ajouter_participant">
 
-                <label for="email">Ajouter un participant par email :</label>
-                <input type="email" id="email" name="email" required>
+                    <label for="email">Ajouter un participant par email :</label>
+                    <input type="email" id="email" name="email" required>
 
-                <button type="submit">Ajouter</button>
-            </form>
+                    <button type="submit">Ajouter</button>
+                </form>
+            <?php else: ?>
+                <p class="message-vide">Seul le createur du voyage peut ajouter ou supprimer des participants.</p>
+            <?php endif; ?>
         </section>
 
         <section class="section-modification">

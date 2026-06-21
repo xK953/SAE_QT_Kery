@@ -13,7 +13,7 @@ if (isset($_POST['creer_voyage'])) {
     $titre_destination = trim($_POST['titre_destination']);
     $date_debut = $_POST['date_debut'];
     $duree_jours = (int) $_POST['duree_jours'];
-    $id_utilisateur = $_SESSION['id_utilisateur'];
+    $id_utilisateur = (int) $_SESSION['id_utilisateur'];
 
     if ($titre_destination === "" || $date_debut === "" || $duree_jours <= 0) {
         $erreur = "Veuillez remplir correctement tous les champs.";
@@ -22,10 +22,11 @@ if (isset($_POST['creer_voyage'])) {
             $pdo->beginTransaction();
 
             $requete = $pdo->prepare("
-                INSERT INTO Voyages (titre_destination, date_debut, duree_jours)
-                VALUES (:titre_destination, :date_debut, :duree_jours)
+                INSERT INTO Voyages (id_createur, titre_destination, date_debut, duree_jours)
+                VALUES (:id_createur, :titre_destination, :date_debut, :duree_jours)
             ");
             $requete->execute([
+                ':id_createur' => $id_utilisateur,
                 ':titre_destination' => $titre_destination,
                 ':date_debut' => $date_debut,
                 ':duree_jours' => $duree_jours
