@@ -144,6 +144,20 @@ p.connexion{
     background-color: #0069d9;
 }
 
+.btn-supprimer {
+    display: inline-block;
+    background-color: #dc3545;
+    color: white;
+    padding: 8px 12px;
+    text-decoration: none;
+    border-radius: 4px;
+    font-weight: bold;
+}
+
+.btn-supprimer:hover {
+    background-color: #c82333;
+}
+
 .btn-danger {
     background-color: #dc3545;
     width: auto;
@@ -172,6 +186,38 @@ p.connexion{
 .voyage-carte p {
     margin: 5px 0;
     color: #555;
+}
+
+.confirmation-suppression {
+    background-color: #fff3cd;
+    border: 1px solid #ffeeba;
+    border-radius: 4px;
+    margin-top: 15px;
+    padding: 12px;
+}
+
+.confirmation-suppression p {
+    color: #856404;
+    margin-bottom: 10px;
+}
+
+.form-confirmation {
+    background: none;
+    box-shadow: none;
+    padding: 0;
+    margin: 0 10px 0 0;
+    max-width: none;
+    display: inline-block;
+}
+
+.btn-annuler {
+    color: #6c757d;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.btn-annuler:hover {
+    text-decoration: underline;
 }
 
 /* --- Messages d'état --- */

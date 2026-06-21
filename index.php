@@ -20,6 +20,40 @@ if (isset($_GET['action']) && $_GET['action'] === 'deconnexion') {
 $id_utilisateur = $_SESSION['id_utilisateur'];
 $voyages = [];
 $erreur = "";
+$succes = isset($_GET['supprime']) ? "Le voyage a bien ete supprime." : "";
+$id_confirmation_suppression = isset($_GET['confirmer_suppression']) ? (int) $_GET['confirmer_suppression'] : 0;
+
+if (isset($_POST['suppression_confirmee'])) {
+    $id_voyage_a_supprimer = (int) $_POST['id_voyage'];
+
+    try {
+        $requete = $pdo->prepare("
+            SELECT COUNT(*)
+            FROM Participants
+            WHERE id_voyage = :id_voyage
+            AND id_utilisateur = :id_utilisateur
+        ");
+        $requete->execute([
+            ':id_voyage' => $id_voyage_a_supprimer,
+            ':id_utilisateur' => $id_utilisateur
+        ]);
+
+        if ((int) $requete->fetchColumn() === 0) {
+            $erreur = "Vous ne pouvez pas supprimer ce voyage.";
+        } else {
+            $requete = $pdo->prepare("
+                DELETE FROM Voyages
+                WHERE id_voyage = :id_voyage
+            ");
+            $requete->execute([':id_voyage' => $id_voyage_a_supprimer]);
+
+            header("Location: index.php?supprime=1");
+            exit;
+        }
+    } catch(PDOException $e) {
+        $erreur = "Une erreur est survenue lors de la suppression du voyage.";
+    }
+}
 
 // 5. Récupération des données (Logique métier)
 try {
@@ -61,6 +95,10 @@ try {
             <div class="message-erreur"><?= htmlspecialchars($erreur) ?></div>
         <?php endif; ?>
 
+        <?php if (!empty($succes)): ?>
+            <div class="message-succes"><?= htmlspecialchars($succes) ?></div>
+        <?php endif; ?>
+
         <section class="liste-voyages">
             <?php if (empty($voyages)): ?>
                 <p class="message-vide">Vous n'avez pas encore de voyage prévu. Commencez par en créer un !</p>
@@ -73,7 +111,19 @@ try {
                         <div class="voyage-actions">
                             <a href="voyage.php?id=<?= htmlspecialchars($voyage['id_voyage']) ?>" class="btn-voir">Voir</a>
                             <a href="modifier_voyage.php?id=<?= htmlspecialchars($voyage['id_voyage']) ?>" class="btn-modifier">Modifier</a>
+                            <a href="index.php?confirmer_suppression=<?= htmlspecialchars($voyage['id_voyage']) ?>" class="btn-supprimer">Supprimer</a>
                         </div>
+
+                        <?php if ($id_confirmation_suppression === (int) $voyage['id_voyage']): ?>
+                            <div class="confirmation-suppression">
+                                <p>Voulez-vous vraiment supprimer ce voyage et toutes ses informations ?</p>
+                                <form action="index.php" method="POST" class="form-confirmation">
+                                    <input type="hidden" name="id_voyage" value="<?= htmlspecialchars($voyage['id_voyage']) ?>">
+                                    <button type="submit" name="suppression_confirmee" class="btn-danger">Confirmer la suppression</button>
+                                </form>
+                                <a href="index.php" class="btn-annuler">Annuler</a>
+                            </div>
+                        <?php endif; ?>
                     </article>
                 <?php endforeach; ?>
             <?php endif; ?>
