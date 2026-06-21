@@ -80,7 +80,10 @@ foreach ($etapes as $etape) {
             <h3><?= htmlspecialchars($voyage['titre_destination']) ?></h3>
             <p><strong>Date de depart :</strong> <?= date('d/m/Y', strtotime($voyage['date_debut'])) ?></p>
             <p><strong>Duree :</strong> <?= htmlspecialchars($voyage['duree_jours']) ?> jours</p>
-            <p><strong>Total des etapes :</strong> <?= number_format($total, 2, ',', ' ') ?> EUR</p>
+            <p><strong>Total du voyage :</strong> <?= number_format($total, 2, ',', ' ') ?> EUR</p>
+            <p><strong>Total du voyage par personne :</strong> 
+                <?= count($participants) > 0 ? number_format($total / count($participants), 2, ',', ' ') : '0,00' ?> EUR
+            </p>
 
             <a href="modifier_voyage.php?id=<?= htmlspecialchars($id_voyage) ?>" class="btn-modifier">Modifier ce voyage</a>
         </section>
