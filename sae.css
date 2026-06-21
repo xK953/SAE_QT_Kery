@@ -38,9 +38,9 @@ body {
 }
 
 body.mode-nuit {
-    background:
-        linear-gradient(135deg, rgba(37, 99, 235, 0.16), rgba(8, 145, 178, 0.08) 45%, rgba(0, 0, 0, 0) 75%),
-        #050914;
+    background: 
+        linear-gradient(135deg, rgba(37, 99, 235, 0.32) 0%, rgba(8, 145, 178, 0.18) 50%, rgba(0, 0, 0, 0) 90%),
+        #0b1126;
     color: #e5edf5;
 }
 
@@ -693,4 +693,41 @@ p.connexion a:hover {
 @keyframes fadeIn {
     from { opacity: 0; transform: translateY(-5px); }
     to { opacity: 1; transform: translateY(0); }
+}
+
+/* =========================================
+   CORRECTIONS DE CONTRASTE (MODE NUIT)
+   ========================================= */
+
+/* 1. Titres et sous-titres (Informations, Participants, Étapes...) */
+body.mode-nuit h2,
+body.mode-nuit h3,
+body.mode-nuit h4,
+body.mode-nuit .section-modification h3 {
+    color: #ffffff;
+}
+
+/* 2. Textes secondaires et messages vides ("Aucun participant", "Se connecter") */
+body.mode-nuit .message-vide,
+body.mode-nuit p.connexion,
+body.mode-nuit .btn-annuler {
+    color: #94a3b8; /* Un gris-bleu clair très élégant et lisible sur fond foncé */
+}
+
+/* 3. Esthétique bonus : Adapter les champs de formulaire */
+/* Pour que les cases blanches ne "flasshent" pas trop les yeux en mode nuit */
+body.mode-nuit input[type="text"],
+body.mode-nuit input[type="email"],
+body.mode-nuit input[type="password"],
+body.mode-nuit input[type="date"],
+body.mode-nuit input[type="number"] {
+    background-color: #0f172a; /* Bleu marine extrêmement foncé */
+    color: #ffffff; /* Texte tapé en blanc */
+    border: 1px solid #334155;
+}
+
+/* On adapte l'effet de focus (contour bleu quand on clique dans le champ) */
+body.mode-nuit input:focus {
+    box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.2);
+    border-color: #38bdf8;
 }
