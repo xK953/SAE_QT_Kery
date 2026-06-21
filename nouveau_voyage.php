@@ -105,5 +105,6 @@ if (isset($_POST['creer_voyage'])) {
             <button type="submit" name="creer_voyage">Creer le voyage</button>
         </form>
     </main>
+    <script src="sae.js"></script>
 </body>
 </html>

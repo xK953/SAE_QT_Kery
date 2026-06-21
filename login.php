@@ -71,5 +71,7 @@ if (isset($_POST['connexion'])) {
     <p class="connexion">
         Pas encore de compte ? <a href="inscription.php">S'inscrire</a>
     </p>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script> 
+    <script src="sae.js?v=<?= time() ?>"></script>
 </body>
 </html>

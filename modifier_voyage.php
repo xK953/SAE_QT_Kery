@@ -380,5 +380,9 @@ try {
             </form>
         </section>
     </main>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script> 
+    <script src="sae.js?v=<?= time() ?>"></script>
+</body>
+</html>
 </body>
 </html>

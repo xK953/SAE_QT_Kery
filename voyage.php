@@ -122,5 +122,6 @@ foreach ($etapes as $etape) {
             <?php endif; ?>
         </section>
     </main>
+    <script src="sae.js"></script>
 </body>
 </html>

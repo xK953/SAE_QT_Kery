@@ -59,5 +59,6 @@ if (isset($_POST['inscription'])) {
     <p class="connexion">
         Vous avez déjà un compte ? <a href="login.php">Se connecter </a>
     </p>
+    <script src="sae.js"></script>
 </body>
 </html>
